@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="header-title">
+        <div class="header-title" @click="goto">
             <div class="logo">
                 <el-image
                     style="width: 70px; height: 50px"
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+
     export default {
         name: 'PageHeader',
         props: {
@@ -60,6 +61,9 @@
                 //跳轉至登入頁
                 this.$router.push('/login');
                 // window.location.reload();
+            },
+            goto(){
+                this.$router.push('/')
             }
 
         },
@@ -80,6 +84,7 @@
         display: flex;
         align-items: center;
         padding: 10px;
+        cursor: pointer;
     }
     .logo {
         margin-right: 20px;

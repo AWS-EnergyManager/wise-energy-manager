@@ -6,6 +6,9 @@
 			<div class="consumption-chart" id="consumption-chart">
 				<el-button type="primary" @click="fetchData">Energy</el-button>
 				<LineChart/>
+				<!-- <div class="da" v-for="">
+
+				</div> -->
 			</div>
 		</div>
 		
@@ -48,10 +51,9 @@
 				}
 				]
 			},
-			// apiUrl: 'https://api-bee-system-cluster01.iems-acl.wise-insightapm.com',
 			apiUrl: '/api_url',
 			accessToken: localStorage.getItem('accessToken') || '',
-			errorMessage: ''
+			data: []
 			}
 		},
 		methods: {
@@ -62,11 +64,14 @@
 					'Authorization': 'Bearer ' + this.accessToken
 				},
 			})
-			.then( (response) => console.log(response.data))
+			.then( (response) => {
+				console.log(response.data[0].datapoints)
+				this.data = response.data[0].datapoints
+			})
 			.catch( (error) => console.log(error))
 			}
 		}
-	}
+  }
 </script>
 
 <style lang="scss" scoped>

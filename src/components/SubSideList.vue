@@ -1,20 +1,19 @@
 <template>
-    <!-- <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-    > -->
-    <el-sub-menu index="1">
-    <el-menu-item-group title="Group One">
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
-    </el-menu-item-group>
-    <el-menu-item-group title="Group Two">
-        <el-menu-item index="1-3">item three</el-menu-item>
-    </el-menu-item-group>
-    </el-sub-menu>
-    <!-- </el-menu> -->
+        <el-col :span="4">
+            <el-menu
+                class="el-menu-popper-demo"
+                mode="horizontal" 
+                :popper-offset="16"  
+                style="max-width: 600px"
+            >
+                <el-sub-menu index="3-4" :popper-offset="20">
+                    <template #title>能耗分析</template>
+                    <el-menu-item index="3-4-1">item one</el-menu-item>
+                    <el-menu-item index="3-4-2">item two</el-menu-item>
+                    <el-menu-item index="3-4-3">item three</el-menu-item>
+                </el-sub-menu>
+            </el-menu>
+        </el-col>
 </template>
 
 <script>

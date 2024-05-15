@@ -2,17 +2,20 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    subSideActive: false,
+    acceddToken: null,
+
   },
   getters: {
 
   },
   mutations: { // mutations are synchronous
-    setSubSideActive(state, payload) {
-      state.subSideActive = payload
+    setToken(state, token) {
+      state.acceddToken = token
     }
+  
   },
   actions: { // actions are asynchronous
+
   },
   modules: {
 
