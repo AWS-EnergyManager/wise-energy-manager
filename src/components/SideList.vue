@@ -30,7 +30,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 export default {
     name: 'SideList',
     components: {
@@ -41,7 +40,7 @@ export default {
     },
     methods: {
         goto(v){
-            this.$router.push(`/${v}`)//
+            this.$router.push(`/${v}`)
         },
     }
 }
@@ -54,7 +53,6 @@ export default {
     height: 100%;
     .el-menu-vertical-demo {
         width: 100%;
-        // height: 100%;
     }
 }
 

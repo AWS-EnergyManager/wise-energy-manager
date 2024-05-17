@@ -53,14 +53,11 @@
 
 <style lang="scss" scoped>
 .chatbot-container {
-    // background-color: rgba(65, 186, 227, 0.661);
     width: 100%;
     height: 100%;
-    // border: 1px solid #ccc;
     padding: 10px;
     .chatbot-title{
         height: 10%;
-        // background-color: red;
         display: flex;
         flex-direction: column;
         justify-content: center;

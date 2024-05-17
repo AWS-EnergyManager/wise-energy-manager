@@ -17,7 +17,7 @@ export default createStore({
     async savePowerData({ commit },payload) {
       try {
         commit('setPowerData', payload);
-        console.log("Got power data");
+        console.log("拿到VUEX資料");
       } catch (error) {
         console.error("Failed to get power data", error);
       }

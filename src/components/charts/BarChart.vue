@@ -56,7 +56,6 @@ export default defineComponent({
         (newPowerData) => {
         const temps = [];
         const dates = [];
-        console.log("現有資料",newPowerData)
         newPowerData.forEach(([temp, date]) => {
             dates.push(date);
             temps.push(temp);

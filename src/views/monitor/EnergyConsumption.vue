@@ -73,9 +73,8 @@ import { mapActions } from 'vuex';
 		},
 		methods: {
 			...mapActions(['savePowerData']),
+			//獲取電量資料
 			fetchData() {
-			// this.requestData.range.from = this.toISO(this.requestData.range.from);
-			// this.requestData.range.to = this.toISO(this.requestData.range.to);
 			axios.post(this.apiUrl + '/v1/simplejson/query/new', this.requestData,{
 				headers: {
 					'Content-Type': 'application/json',
@@ -83,15 +82,10 @@ import { mapActions } from 'vuex';
 				},
 			})
 			.then( (response) => {
-				console.log("raw",response.data[0]);
 				this.powerData = response.data[0].datapoints;
 				this.powerData = this.powerData.map((item) => {
-
-					return [item[0], this.timeStampconver(item[1])];
+				return [item[0], this.timeStampconver(item[1])];
 				});
-
-				console.log("電量資料：",this.powerData);
-				console.log("時間範圍：",this.requestData.range)
 				this.savePowerData(this.powerData);
 			})
 			.catch( (error) => {
@@ -99,6 +93,7 @@ import { mapActions } from 'vuex';
 				console.log(error.response.data.message);
 			})
 			},
+			//轉換時間戳
 			timeStampconver(timeStamp) {
 				const date = new Date(timeStamp * 1000);
 				const year = date.getFullYear();
@@ -107,14 +102,12 @@ import { mapActions } from 'vuex';
 				const formattedTime = `${year}-${month}-${day}`;
 				return formattedTime;
 			},
+			//轉換時間格式
 			toISO(date) {
-				// 获取本地时间的 UTC 时间戳
 				const localDate = new Date(date);
 				const utcDate = new Date(localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
-				
-				// 格式化为 YYYY-MM-DDTHH:mm:ss.sssZ
 				const year = utcDate.getUTCFullYear();
-				const month = `0${utcDate.getUTCMonth() + 1}`.slice(-2); // 月份从 0 开始，所以需要 +1
+				const month = `0${utcDate.getUTCMonth() + 1}`.slice(-2); 
 				const day = `0${utcDate.getUTCDate()}`.slice(-2);
 				const hours = `0${utcDate.getUTCHours()}`.slice(-2);
 				const minutes = `0${utcDate.getUTCMinutes()}`.slice(-2);
