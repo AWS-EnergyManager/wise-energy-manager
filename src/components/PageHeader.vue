@@ -3,7 +3,7 @@
         <div class="header-title" @click="goto">
             <div class="logo">
                 <el-image
-                    style="width: 70px; height: 50px"
+                    style="width: 100px; height: 50px"
                     src="https://www.idtech.com.tw/storage/product19/product/communication/ADVANTECH.png"
                     :fit="'scale-down'">
                 </el-image>
@@ -81,6 +81,7 @@
     align-items: center;
     justify-content: space-around;
     background-color: rgb(65, 186, 227);
+    height: 5em;
     .header-title {
         display: flex;
         align-items: center;

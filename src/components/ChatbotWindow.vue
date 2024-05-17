@@ -53,8 +53,9 @@
 
 <style lang="scss" scoped>
 .chatbot-container {
-    background-color: rgba(65, 186, 227, 0.661);
+    // background-color: rgba(65, 186, 227, 0.661);
     width: 100%;
+    height: 100%;
     // border: 1px solid #ccc;
     padding: 10px;
     .chatbot-title{
@@ -70,6 +71,11 @@
             h3{
                 margin-left: 10px;
             }
+        }
+        p{
+            font-size: 14px;
+            color: #ccc;
+            
         }
     }
     .chatbot-content {

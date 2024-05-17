@@ -15,7 +15,8 @@ use([GridComponent, BarChart, CanvasRenderer])
 //必要兩行
 import VChart, { THEME_KEY } from 'vue-echarts';
 import { ref, defineComponent } from 'vue';
-
+import { watch } from 'vue';
+import { useStore } from 'vuex';
 
 
 export default defineComponent({
@@ -27,52 +28,47 @@ export default defineComponent({
     [THEME_KEY]: 'light',
     },
     setup() {
-    //mapState
-
+    const store = useStore(); // 引用 Vuex store
     const option = ref({
         //以下為圖表樣式設定
         xAxis: {
-        type: 'category',
-        data: ['', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            type: 'category',
+            data: [''] //x軸資料
         },
         yAxis: {
-        type: 'value'
+            type: 'value'
         },
         //以下為資料區
         series: [
         {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: [], // Empty initially, will be filled with values
             type: 'bar',
             stack: 'a',
-            name: 'a'
-        },
-        {
-            data: [10, 46, 64, '-', 0, '-', 0],
-            type: 'bar',
-            stack: 'a',
-            name: 'b'
-        },
-        {
-            data: [30, '-', 0, 20, 10, '-', 0],
-            type: 'bar',
-            stack: 'a',
-            name: 'c'
-        },
-        {
-            data: [30, '-', 0, 20, 10, '-', 0],
-            type: 'bar',
-            stack: 'b',
-            name: 'd'
-        },
-        {
-            data: [10, 20, 150, 0, '-', 50, 10],
-            type: 'bar',
-            stack: 'b',
-            name: 'e'
+            name: 'a',
         },
         
         ]
     });
+    
+
+    watch(
+        () => store.state.powerData,
+        (newPowerData) => {
+        const temps = [];
+        const dates = [];
+        console.log("現有資料",newPowerData)
+        newPowerData.forEach(([temp, date]) => {
+            dates.push(date);
+            temps.push(temp);
+            console.log(temp, date)
+        });
+        console.log(temps, dates)
+        option.value.xAxis.data = dates;
+        option.value.series[0].data = temps;
+        },
+        { immediate: true }
+    );
+
 
     return { option };
     }
@@ -81,6 +77,7 @@ export default defineComponent({
 
 <style scoped>
 .chart {
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 </style>
