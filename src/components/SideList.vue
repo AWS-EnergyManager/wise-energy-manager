@@ -20,7 +20,7 @@
                     <span>能效分析</span>
                 </template>
                 <el-menu-item index="2-1" @click="goto('ranking')">能耗排名</el-menu-item>
-                <el-menu-item index="2-2">多對像對比</el-menu-item>
+                <el-menu-item index="2-2" @click="goto('MultiTarget')">多對像對比</el-menu-item>
                 <el-menu-item index="2-3">多時間對比</el-menu-item>
                 <el-menu-item index="2-4">能流分析</el-menu-item>
             </el-sub-menu>

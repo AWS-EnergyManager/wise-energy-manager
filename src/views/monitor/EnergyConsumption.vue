@@ -4,8 +4,10 @@
 		<div class="consumption-container">
 			<SideList/>
 			<div class="consumption-chart" id="consumption-chart">
-				<el-button type="primary" @click="fetchData">Energy</el-button>
-				<LineChart/>
+				<!-- <el-button type="primary" @click="fetchData">Energy</el-button> -->
+				<BarChart/>
+				<!-- <PieChart/> -->
+
 			</div>
 		</div>
 		
@@ -16,7 +18,8 @@
 	import axios from 'axios';
 	import PageHeader from '@/components/PageHeader.vue';
 	import SideList from '@/components/SideList.vue';
-	import LineChart from '@/components/charts/LineChart.vue';
+	import BarChart from '@/components/charts/BarChart.vue';
+	// import PieChart from '@/components/charts/PieChart.vue';
 	axios.defaults.withCredentials = true;
 
 	export default {
@@ -24,7 +27,8 @@
 		components: {
 			PageHeader,
 			SideList,
-			LineChart
+			BarChart,
+			// PieChart
 		},
 		data() {
 			return {
@@ -32,8 +36,8 @@
 				"timeoffset": "00:00:00",
 				"timezone": "Asia/Hong_Kong",
 				"range": {
-				"from": "2024-05-05T16:00:00.000Z",
-				"to": "2024-05-12T16:00:00.000Z"
+				"from": "2024-01-01T16:00:00.000Z",
+				"to": "2024-05-01T16:00:00.000Z"
 				},
 				"language": "zh",
 				"targets": [
@@ -63,7 +67,10 @@
 				},
 			})
 			.then( (response) => console.log(response.data))
-			.catch( (error) => console.log(error))
+			.catch( (error) => {
+				alert("請重新登入")
+				console.log(error.response.data.message);
+			})
 			}
 		}
 	}
