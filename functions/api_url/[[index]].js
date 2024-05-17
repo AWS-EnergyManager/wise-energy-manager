@@ -1,5 +1,5 @@
-export const onRequest = async (context) => {  
-  const request = context.request;  
+export function onRequest(context) {  
+  // const request = context.request;  
   try {  
     // const url = new URL(request.url);  
     // const path = url.pathname;  
@@ -20,8 +20,12 @@ export const onRequest = async (context) => {
     //   modifiedRequest.headers.set("x-request-ip", request.headers.get("x-real-ip"));  
     //   return fetch(modifiedRequest);  
     // }
-    return await context.next();  
+    return context.next();  
   } catch (e) {  
-    return await context.next();  
+    return context.next();  
   }
 }
+
+// export function onRequest(context) {
+//   return new Response("Hello, world!")
+// }
