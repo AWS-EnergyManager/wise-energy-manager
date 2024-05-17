@@ -26,6 +26,9 @@ dependencies:
   vue:
     specifier: ^3.2.13
     version: 3.4.27
+  vue-echarts:
+    specifier: ^6.7.2
+    version: 6.7.2(echarts@5.5.0)(vue@3.4.27)
   vue-router:
     specifier: ^4.0.3
     version: 4.3.2(vue@3.4.27)
@@ -7327,6 +7330,10 @@ packages:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
     dev: true
 
+  /resize-detector@0.3.0:
+    resolution: {integrity: sha512-R/tCuvuOHQ8o2boRP6vgx8hXCCy87H1eY9V5imBYeVNyNVpuL9ciReSccLj2gDcax9+2weXy3bc8Vv+NRXeEvQ==}
+    dev: false
+
   /resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -8442,6 +8449,21 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
+  /vue-demi@0.13.11(vue@3.4.27):
+    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.4.27
+    dev: false
+
   /vue-demi@0.14.7(vue@3.4.27):
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
     engines: {node: '>=12'}
@@ -8455,6 +8477,26 @@ packages:
         optional: true
     dependencies:
       vue: 3.4.27
+    dev: false
+
+  /vue-echarts@6.7.2(echarts@5.5.0)(vue@3.4.27):
+    resolution: {integrity: sha512-SG8Vmszhx24KjtySsk361DogZLRkPCyLhgoyh7iN1eH3WGJ0kyl3k0g4QiSJqK0+F1Ej0HDopq4A5OGcBlAwzw==}
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.5
+      '@vue/runtime-core': ^3.0.0
+      echarts: ^5.4.1
+      vue: ^2.6.12 || ^3.1.1
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      '@vue/runtime-core':
+        optional: true
+    dependencies:
+      echarts: 5.5.0
+      resize-detector: 0.3.0
+      vue: 3.4.27
+      vue-demi: 0.13.11(vue@3.4.27)
     dev: false
 
   /vue-eslint-parser@8.3.0(eslint@7.32.0):

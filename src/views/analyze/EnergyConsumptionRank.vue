@@ -19,7 +19,7 @@
 	import axios from 'axios';
 	import PageHeader from '@/components/PageHeader.vue';
 	import SideList from '@/components/SideList.vue';
-	import LineChart from '@/components/charts/LineChart.vue';
+	import LineChart from '@/components/charts/BarChart.vue';
 	axios.defaults.withCredentials = true;
 
 	export default {

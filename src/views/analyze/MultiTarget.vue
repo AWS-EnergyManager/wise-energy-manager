@@ -1,7 +1,6 @@
 <template>
     <div>
         <PageHeader/>
-
         <SideList/>
         <div id="main" style="width: 600px;height:400px;">
 
@@ -10,6 +9,8 @@
 </template>
 
 <script>
+	// import PageHeader from '@/components/PageHeader.vue';
+	// import SideList from '@/components/SideList.vue';
     import * as echarts from 'echarts';
 
 export default {
