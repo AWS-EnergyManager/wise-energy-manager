@@ -26,6 +26,10 @@ const routes = [
     path: '/MultiTarget',
     name: 'MultiTarget',
     component: () => import('../views/analyze/MultiTarget.vue')
+  },{
+    path: '/MultiTime',
+    name: 'MultiTime',
+    component: () => import('../views/analyze/MultiTime.vue')
   },
 ]
 

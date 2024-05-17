@@ -1,18 +1,25 @@
 <template>
     <div>
         <PageHeader/>
-
-        <SideList/>
-        <div id="main" style="width: 600px;height:400px;">
-
+        <div class="container">
+            <div class="sidelist-container">
+                <SideList/>
+            </div>
+            <div id="main" style="width: 600px;height:400px;"></div>
         </div>
     </div>
 </template>
 
 <script>
     import * as echarts from 'echarts';
+    import PageHeader from '@/components/PageHeader.vue';
+	import SideList from '@/components/SideList.vue';
 
 export default {
+    components:{
+        PageHeader,
+        SideList
+    },
     mounted() {
     this.renderChart();
     },
@@ -42,5 +49,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .container{
+        display: flex;
+        justify-content: flex-start;
+    }
 </style>
