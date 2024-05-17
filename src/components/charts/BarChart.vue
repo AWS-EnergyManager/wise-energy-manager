@@ -21,17 +21,19 @@ import { ref, defineComponent } from 'vue';
 export default defineComponent({
     name: 'BarChart',
     components: {
-    VChart,
+        VChart,
     },
     provide: {
     [THEME_KEY]: 'light',
     },
     setup() {
+    //mapState
+
     const option = ref({
         //以下為圖表樣式設定
         xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        data: ['', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
         yAxis: {
         type: 'value'

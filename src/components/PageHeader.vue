@@ -18,7 +18,7 @@
                 effect="dark"
                 content="設定"
             >
-                <el-button type="primary" circle><el-icon><Setting /></el-icon></el-button>
+                <el-button circle><el-icon><Setting /></el-icon></el-button>
             </el-tooltip>
             <el-dropdown>
                 <div class="el-dropdown-link user-active">
@@ -80,6 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color: rgb(65, 186, 227);
     .header-title {
         display: flex;
         align-items: center;
@@ -90,7 +91,8 @@
         margin-right: 20px;
     }
     .name {
-        font-size: 20px;
+        font-size: 24px;
+        color: white;
     }
     .header-setting {
         display: flex;
@@ -103,6 +105,7 @@
             outline: none;
             .userName {
                 margin-left: 10px;
+                color: white;
             }
             .el-avatar {
                 margin-left: 20px;

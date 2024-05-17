@@ -2,15 +2,13 @@
 	<div>
 		<PageHeader/>
 		<div class="consumption-container">
-			<SideList/>
-			<div class="consumption-chart" id="consumption-chart">
-				<!-- <el-button type="primary" @click="fetchData">Energy</el-button> -->
-				<BarChart/>
-				<!-- <PieChart/> -->
-
+					<SideList class="col-3"/>
+					<div class="consumption-chart" id="consumption-chart">
+						<el-button type="primary" @click="fetchData">Energy</el-button>
+						<BarChart/>
+					</div>
+					<ChatbotWindow class="col-3"/>
 			</div>
-		</div>
-		
 	</div>
 </template>
 
@@ -19,7 +17,8 @@
 	import PageHeader from '@/components/PageHeader.vue';
 	import SideList from '@/components/SideList.vue';
 	import BarChart from '@/components/charts/BarChart.vue';
-	// import PieChart from '@/components/charts/PieChart.vue';
+	import ChatbotWindow from '@/components/ChatbotWindow.vue';
+import { mapActions } from 'vuex';
 	axios.defaults.withCredentials = true;
 
 	export default {
@@ -28,7 +27,7 @@
 			PageHeader,
 			SideList,
 			BarChart,
-			// PieChart
+			ChatbotWindow,
 		},
 		data() {
 			return {
@@ -52,13 +51,14 @@
 				}
 				]
 			},
-			// apiUrl: 'https://api-bee-system-cluster01.iems-acl.wise-insightapm.com',
 			apiUrl: '/api_url',
 			accessToken: localStorage.getItem('accessToken') || '',
-			errorMessage: ''
+			errorMessage: '',
+			powerData: []
 			}
 		},
 		methods: {
+			...mapActions(['savePowerData']),
 			fetchData() {
 			axios.post(this.apiUrl + '/v1/simplejson/query/new', this.requestData,{
 				headers: {
@@ -66,12 +66,33 @@
 					'Authorization': 'Bearer ' + this.accessToken
 				},
 			})
-			.then( (response) => console.log(response.data))
+			.then( (response) => {
+				// console.log("raw",response.data[0].datapoints);
+				this.powerData = response.data[0].datapoints;
+				this.powerData.forEach( (item) => {
+					item[1] = this.timeStampconver(item[1]);
+				})
+				console.log("powerData",this.powerData);
+				this.savePowerData(this.powerData);
+			})
 			.catch( (error) => {
 				alert("請重新登入")
 				console.log(error.response.data.message);
 			})
-			}
+			},
+			timeStampconver(timeStamp) {
+				const date = new Date(timeStamp * 1000)
+				const year = date.getUTCFullYear();
+				const month = `0${date.getUTCMonth() + 1}`;
+				const day = `0${date.getUTCDate()}`;
+				// const hours = date.getHours();
+				// const minutes = `0${date.getMinutes()}`;
+				// const seconds = `0${date.getSeconds()}`;
+				// const formattedTime = `${year}-${month.substr(-2)}-${day.substr(-2)} ${hours}:${minutes.substr(-2)}:${seconds.substr(-2)}`;
+				const formattedTime = `${year}-${month.substr(-2)}-${day.substr(-2)}`;
+				// console.log(formattedTime);
+				return formattedTime;
+			},
 		}
 	}
 </script>
@@ -79,11 +100,16 @@
 <style lang="scss" scoped>
 .consumption-container{
 	display: flex;
-	// justify-content: space-between;
+	justify-content: space-between;
 	.consumption-chart{
-		width: 100%;
-		height: 100%;
+		width: 50%;
+		height: 50%;
+	}
+	.col-3{
+		width: 20%;
+		// background-color: aqua;
 	}
 }
+
 
 </style>
