@@ -1,8 +1,8 @@
 <template>
   <div>
     <PageHeader/>
-    <SideList/>
-    <el-button type="primary" @click="fetchData">Data</el-button>
+    <SideList class="col-3"/>
+    <!-- <el-button type="primary" @click="fetchData">Data</el-button> -->
   </div>
 </template>
 
@@ -66,5 +66,8 @@
 </script>
 
 <style lang="scss" scoped>
-
+.col-3{
+		width: 20%;
+		// background-color: aqua;
+	}
 </style>

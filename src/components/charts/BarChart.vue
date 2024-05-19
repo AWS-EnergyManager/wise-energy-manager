@@ -59,9 +59,9 @@ export default defineComponent({
         newPowerData.forEach(([temp, date]) => {
             dates.push(date);
             temps.push(temp);
-            console.log(temp, date)
+            // console.log(temp, date)
         });
-        console.log(temps, dates)
+        // console.log(temps, dates)
         option.value.xAxis.data = dates;
         option.value.series[0].data = temps;
         },

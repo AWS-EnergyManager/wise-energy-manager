@@ -13,6 +13,11 @@ module.exports = defineConfig({
         changeOrigin: true,
         pathRewrite: { '^/portal_url': '' }
       },
+      '/nelson_api': {
+        target: 'https://k4pk01yup7.execute-api.us-west-2.amazonaws.com',
+        changeOrigin: true,
+        pathRewrite: { '^/nelson_api': '' }
+      },
     }
   }
 })

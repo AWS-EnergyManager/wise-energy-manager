@@ -8,32 +8,44 @@
             <p>新對話內容</p>
         </div>
         <div class="chatbot-content">
-            <div class="content-buble">
-                <p>你好</p>
-                <span>2024/05/17 19:49</span>
+            <div class="content-buble" v-if="this.bubble">
+                <p>{{ this.bubble }}</p>
+                <span>{{this.date.toLocaleString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false})}}</span>
             </div>
-            <div class="content-response-buble">
-                <p>你好</p>
-                <span>2024/05/17 19:49</span>
+            <div class="content-response-buble" v-if="this.responseBubble">
+                <p>{{ this.responseBubble }}</p>
+                <span>{{this.date.toLocaleString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false})}}</span>
             </div>
         </div>
         <el-form
             style="max-width: 600px"
-            :model="numberValidateForm"
             label-width="auto"
             class="demo-ruleForm"
             >
             <div class="form-items">
                 <el-form-item class="form-items-content">
                     <el-input
-                        v-model="content"
+                        v-model="this.message.message"
                         type="text"
-                        autocomplete="off"
                         placeholder="請輸入訊息"
                     />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="" ><el-icon><Promotion /></el-icon></el-button>
+                    <el-button type="" @click="callOpenAI"  ><el-icon><Promotion /></el-icon></el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -41,12 +53,31 @@
 </template>
 
 <script>
+import axios from 'axios';
     export default {
         name: 'ChatbotWindow',
         data() {
             return {
-                message: ''
+                message: {message:''},
+                api: '/nelson_api',
+                bubble:'',
+                responseBubble: '',
+                date: new Date(),
             }
+        },
+        methods:{
+            callOpenAI(){
+                axios.post(this.api + '/api/chat', this.message)
+                .then((response) => {
+                    this.responseBubble = response.data.data.message;
+                    console.log(response.data.data.message)
+                    this.bubble = this.message.message;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            },
+
         }
     }
 </script>

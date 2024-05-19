@@ -50,6 +50,7 @@
         },
         data() {
             return {
+                
             }
         },
         methods: {

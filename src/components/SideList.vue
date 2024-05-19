@@ -3,8 +3,6 @@
         <el-menu
             default-active="2"
             class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose"
             >
             <el-sub-menu index="1">
                 <template #title>

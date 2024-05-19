@@ -5,35 +5,43 @@
 					<SideList class="col-3"/>
 					<div class="consumption-chart" id="consumption-chart">
 						<div class="datePicker">
-							<el-date-picker
-								v-model="requestData.range.from"
-								type="date"
-								placeholder="起始時間"
-								@change="this.toISO(this.requestData.range.from)"
+							<el-input
+								v-model="requestData.resourceId"
+								style="width: 240px"
+								placeholder="大樓ID"
+								type="number"
+								clearable
 							/>
 							<el-date-picker
-								v-model="requestData.range.to"
+								v-model="requestDataDateRangeFromModified"
 								type="date"
+								value-format="YYYY-MM-DDTHH:mm:ss.SSSZ"
+								placeholder="起始時間"
+							/>
+							<el-date-picker
+								v-model="requestDataDateRangeToModified"
+								type="date"
+								value-format="YYYY-MM-DDTHH:mm:ss.SSSZ"
 								placeholder="結束時間"
-								@change="this.toISO(this.requestData.range.to)"
 							/>
 							<el-button type="primary" @click="fetchData">查詢</el-button>
 						</div>
 						<BarChart/>
+						<el-button type="primary" @click="getBuildingList">建築物</el-button>
 					</div>
 					<ChatbotWindow class="col-3"/>
 			</div>
 	</div>
-</template>
+</template>	
 
 <script>
-	import axios from 'axios';
-	import PageHeader from '@/components/PageHeader.vue';
-	import SideList from '@/components/SideList.vue';
-	import BarChart from '@/components/charts/BarChart.vue';
-	import ChatbotWindow from '@/components/ChatbotWindow.vue';
+import axios from 'axios';
+import PageHeader from '@/components/PageHeader.vue';
+import SideList from '@/components/SideList.vue';
+import BarChart from '@/components/charts/BarChart.vue';
+import ChatbotWindow from '@/components/ChatbotWindow.vue';
 import { mapActions } from 'vuex';
-	axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 	export default {
 		name: 'EnergyConsumption',
@@ -45,77 +53,107 @@ import { mapActions } from 'vuex';
 		},
 		data() {
 			return {
-			requestData: {
-				"timeoffset": "00:00:00",
-				"timezone": "Asia/Hong_Kong",
-				"range": {
-				"from": "", //起始時間
-				"to": "" //結束時間
+				requestData: {
+					"timeoffset": "00:00:00",
+					"timezone": "Asia/Hong_Kong",
+					"range": {
+						"from": "2024-04-01T16:00:00.000Z",
+						"to": "2024-04-14T16:00:00.000Z",
+					},
+					"language": "zh",
+					"targets": [
+						{
+							"target": "energy",
+							"queryType": "bems_multi",
+							"apmOrgId": 1,
+							"resourceId": "1580",//建築物ID
+							"subitemCode": "01000",
+							"formulaType": 183,
+							"formulaUnit": "day"//時間單位
+						}
+					]
 				},
-				"language": "zh",
-				"targets": [
-				{
-					"target": "energy",
-					"queryType": "bems_multi",
-					"apmOrgId": 1,
-					"resourceId": "1580",//建築物ID
-					"subitemCode": "01000",
-					"formulaType": 183,
-					"formulaUnit": "day"//時間單位
-				}
-				]
-			},
-			apiUrl: '/api_url',
-			accessToken: localStorage.getItem('accessToken') || '',
-			errorMessage: '',
-			powerData: [],
+				apiUrl: '/api_url',
+				accessToken: localStorage.getItem('accessToken') || '',
+				errorMessage: '',
 			}
+		},
+		computed: {
+			requestDataDateRangeFromModified: {
+				set(value){
+					this.requestData.range.from = new Date(value).toISOString();
+					
+				},
+				get(){
+					return this.requestData.range.from;
+				}
+			},
+			requestDataDateRangeToModified: {
+				set(value){
+					// 將儲存日期往後一天
+					console.log(value);
+					const date = new Date(value);
+					date.setDate(date.getDate() + 1);
+					this.requestData.range.to = date.toISOString();
+				},
+				get(){
+					// 將顯示日期往前一天
+					const date = new Date(this.requestData.range.to);
+					date.setDate(date.getDate() - 1);
+					return date.toISOString();
+				}
+			},
 		},
 		methods: {
 			...mapActions(['savePowerData']),
 			//獲取電量資料
 			fetchData() {
-			axios.post(this.apiUrl + '/v1/simplejson/query/new', this.requestData,{
+			axios.post(this.apiUrl + '/v1/simplejson/query/v1', this.requestData,{
 				headers: {
 					'Content-Type': 'application/json',
 					'Authorization': 'Bearer ' + this.accessToken
 				},
 			})
 			.then( (response) => {
-				this.powerData = response.data[0].datapoints;
-				this.powerData = this.powerData.map((item) => {
-				return [item[0], this.timeStampconver(item[1])];
+				let powerData = response.data[0].datapoints;
+				powerData = powerData.map((item) => {
+					return [item[0], this.timeStampconver(item[1])];
 				});
-				this.savePowerData(this.powerData);
+				this.savePowerData(powerData);
 			})
 			.catch( (error) => {
 				alert("請重新登入")
+				console.error("Error: ",error);
 				console.log(error.response.data.message);
 			})
 			},
+			//獲取建築物清單
+			getBuildingList() {
+				axios.get(this.apiUrl + '/v1/resources/neworganizations',{
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': 'Bearer ' + this.accessToken
+					},
+				})
+				.then( (response) => {
+					console.log("建築物清單：",response.data);
+				})
+				.catch( (error) => {
+					console.error("Error: ",error);
+					console.log("錯誤訊息：",error.response);
+				})
+			},
+		
 			//轉換時間戳
 			timeStampconver(timeStamp) {
-				const date = new Date(timeStamp * 1000);
-				const year = date.getFullYear();
-				const month = `0${date.getMonth() + 1}`.slice(-2); // 月份从 0 开始，所以需要 +1
-				const day = `0${date.getDate()}`.slice(-2);
-				const formattedTime = `${year}-${month}-${day}`;
-				return formattedTime;
+				// Turn the UNIX timestamp into a human-readable date string like "2021-01-01" with UTC+8
+				return new Date(timeStamp * 1000).toLocaleDateString('zh-Hans-CN', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+				});
 			},
-			//轉換時間格式
-			toISO(date) {
-				const localDate = new Date(date);
-				const utcDate = new Date(localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
-				const year = utcDate.getUTCFullYear();
-				const month = `0${utcDate.getUTCMonth() + 1}`.slice(-2); 
-				const day = `0${utcDate.getUTCDate()}`.slice(-2);
-				const hours = `0${utcDate.getUTCHours()}`.slice(-2);
-				const minutes = `0${utcDate.getUTCMinutes()}`.slice(-2);
-				const seconds = `0${utcDate.getUTCSeconds()}`.slice(-2);
-				const milliseconds = `00${utcDate.getUTCMilliseconds()}`.slice(-3);
-				
-				return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
-			}
+			
 		}
 	}
 </script>
@@ -134,10 +172,6 @@ import { mapActions } from 'vuex';
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			.el-date-picker{
-				width: 200px;
-				margin: 0 10px;
-			}
 		}
 	}
 	.col-3{
@@ -145,6 +179,8 @@ import { mapActions } from 'vuex';
 		// background-color: aqua;
 	}
 }
+
+
 
 
 </style>
