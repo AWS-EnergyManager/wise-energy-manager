@@ -7,6 +7,7 @@ export default createStore({
   },
   getters: {
     // Define getters here if needed
+    powerData: state => state.powerData
   },
   mutations: { // mutations are synchronous
     setPowerData(state, payload) {
@@ -18,6 +19,7 @@ export default createStore({
       try {
         commit('setPowerData', payload);
         console.log("拿到VUEX資料");
+        console.log(payload);
       } catch (error) {
         console.error("Failed to get power data", error);
       }

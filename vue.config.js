@@ -2,6 +2,10 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
+    allowedHosts: [
+      'elb.amazonaws.com', // 允许访问的域名地址，即花生壳内网穿透的地址
+      '.elb.amazonaws.com'   // .是二级域名的通配符   
+    ],
     proxy: {
       '/api_url': {
         target: 'https://api-bee-system-cluster01.iems-acl.wise-insightapm.com',

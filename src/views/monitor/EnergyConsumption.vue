@@ -2,16 +2,16 @@
 	<div>
 		<PageHeader/>
 		<div class="consumption-container">
-					<SideList class="col-3"/>
+					<SideList class="col-4"/>
 					<div class="consumption-chart" id="consumption-chart">
 						<div class="datePicker">
-							<el-input
-								v-model="requestData.resourceId"
-								style="width: 240px"
-								placeholder="大樓ID"
-								type="number"
-								clearable
-							/>
+							<!--<el-input-->
+							<!--	v-model="requestData.resourceId"-->
+							<!--	style="width: 240px"-->
+							<!--	placeholder="大樓ID"-->
+							<!--	type="number"-->
+							<!--	clearable-->
+							<!--/>-->
 							<el-date-picker
 								v-model="requestDataDateRangeFromModified"
 								type="date"
@@ -27,7 +27,7 @@
 							<el-button type="primary" @click="fetchData">查詢</el-button>
 						</div>
 						<BarChart/>
-						<el-button type="primary" @click="getBuildingList">建築物</el-button>
+						<!--<el-button type="primary" @click="getBuildingList">建築物</el-button>-->
 					</div>
 					<ChatbotWindow class="col-3"/>
 			</div>
@@ -175,6 +175,10 @@ axios.defaults.withCredentials = true;
 		}
 	}
 	.col-3{
+		width: 30%;
+		// background-color: aqua;
+	}
+	.col-4{
 		width: 20%;
 		// background-color: aqua;
 	}

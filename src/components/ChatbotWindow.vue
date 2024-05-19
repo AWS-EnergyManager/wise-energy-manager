@@ -5,30 +5,45 @@
                 <el-icon><Service /></el-icon>
                 <h3>智能AI專家</h3>
             </div>
-            <p>新對話內容</p>
+             <el-select
+              v-model="this.message.chatbot_type"
+              placeholder="模式選擇"
+              size="large"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
         </div>
-        <div class="chatbot-content">
-            <div class="content-buble" v-if="this.bubble">
-                <p>{{ this.bubble }}</p>
-                <span>{{this.date.toLocaleString('ja-JP', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false})}}</span>
-            </div>
-            <div class="content-response-buble" v-if="this.responseBubble">
-                <p>{{ this.responseBubble }}</p>
-                <span>{{this.date.toLocaleString('ja-JP', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false})}}</span>
+        <div class="chatbot-content" v-loading="this.loading">
+            <div :key="index" v-for = "(item, index) in history">
+                <div class="content-buble">
+                    <p>{{ item[0] }}</p>
+                    <!--<span>{{this.date.toLocaleString('ja-JP', {-->
+                    <!--year: 'numeric',-->
+                    <!--month: '2-digit',-->
+                    <!--day: '2-digit',-->
+                    <!--hour: '2-digit',-->
+                    <!--minute: '2-digit',-->
+                    <!--second: '2-digit',-->
+                    <!--hour12: false})}}</span>-->
+                </div>
+                <!--<div class="content-response-buble" v-if="this.responseBubble.length > 0" :key="index" v-for = item in this.responseBubble>-->
+                <div class="content-response-buble">
+                    <p>{{ item[1] }}</p>
+                    <!--<span>{{this.date.toLocaleString('ja-JP', {-->
+                    <!--year: 'numeric',-->
+                    <!--month: '2-digit',-->
+                    <!--day: '2-digit',-->
+                    <!--hour: '2-digit',-->
+                    <!--minute: '2-digit',-->
+                    <!--second: '2-digit',-->
+                    <!--hour12: false})}}</span>-->
+                </div>
             </div>
         </div>
         <el-form
@@ -38,14 +53,21 @@
             >
             <div class="form-items">
                 <el-form-item class="form-items-content">
+                     <el-input
+                        v-model="this.message.session_id"
+                        type="text"
+                        placeholder="輸入代號"
+                    />
                     <el-input
-                        v-model="this.message.message"
+                        v-model="this.message.user_input"
                         type="text"
                         placeholder="請輸入訊息"
                     />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="" @click="callOpenAI"  ><el-icon><Promotion /></el-icon></el-button>
+                    <div class="btn"  >
+                        <el-button type="primary" round @click="callOpenAI">送出</el-button>
+                    </div>
                 </el-form-item>
             </div>
         </el-form>
@@ -58,20 +80,41 @@ import axios from 'axios';
         name: 'ChatbotWindow',
         data() {
             return {
-                message: {message:''},
+                message: {
+                    "user_input": "",
+                    "session_id": "01",
+                    "chatbot_type": "basic",
+                    "clean_history": false,
+                },
                 api: '/nelson_api',
-                bubble:'',
-                responseBubble: '',
+                //bubble:["你好","今天天氣如何"],
+                //responseBubble: ["你好","很好"],
+                //history:[["你好","你好"], ["今天天氣如何","很好"],["午餐","吃飯"]],
+                history:[],
                 date: new Date(),
+                options : [
+                  {
+                    value: 'basic',
+                    label: '基礎',
+                  },
+                  {
+                    value: 'doc',
+                    label: '文件',
+                  },
+                 ],
+                 loading:false,
             }
         },
         methods:{
             callOpenAI(){
+                this.loading = true
                 axios.post(this.api + '/api/chat', this.message)
                 .then((response) => {
-                    this.responseBubble = response.data.data.message;
-                    console.log(response.data.data.message)
-                    this.bubble = this.message.message;
+                    this.loading = false
+                    this.history.push([this.message.user_input, response.data.response]);
+                    this.message.user_input = "";
+                    //console.log("powerData",this.powerData)
+                    
                 })
                 .catch((error) => {
                     console.log(error);
@@ -163,6 +206,10 @@ import axios from 'axios';
             margin: 0 10px;
             .form-items-content{
                 width: 100%;
+                
+            }
+            .btn{
+                padding:10px
             }
         }
 
